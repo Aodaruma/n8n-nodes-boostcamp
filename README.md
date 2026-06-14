@@ -1,36 +1,36 @@
 # n8n-nodes-boostcamp
 
-Boostcamp の unofficial API を self-hosted n8n から扱う community node です。Python runtime には依存せず、Firebase login と workout history 正規化を TypeScript で実装しています。
+Self-hosted n8n community node for integrating with Boostcamp through an unofficial API. It does not depend on a Python runtime and implements Firebase login plus workout history normalization in TypeScript.
 
 ## Included Node
 
 - `Boostcamp`
-  - `Test Auth`
-  - `Get Workouts`
-  - `Get Workout Summary`
+- `Test Auth`
+- `Get Workouts`
+- `Get Workout Summary`
 
 ## Included Credential
 
 - `Boostcamp API`
-  - `Email + Password`
-  - `Token`
-  - `Session Cookie`
-  - `API Base URL` override
+- `Email + Password`
+- `Token`
+- `Session Cookie`
+- `API Base URL` override
 
 ## Features
 
-- Firebase email/password login を内蔵
-- `/programs/history` の取得
-- Boostcamp Web の履歴形状をもとにした workout 正規化
-- kg 正規化と summary 生成
-- structured warnings / errors
-- `failOnError: false` でワークフロー継続可能
+- Built-in Firebase email/password login
+- Fetches `/programs/history`
+- Normalizes workouts based on the Boostcamp Web history shape
+- Weight normalization to kilograms and summary generation
+- Structured warnings and errors
+- Can continue workflow execution with `failOnError: false`
 
 ## Important Notes
 
-- Boostcamp の公式公開 API ではなく、Web 実装を参考にした unofficial integration です
-- API 仕様変更で動作が変わる可能性があります
-- `sessionCookie` モードはサービス側の仕様変更に影響されやすいため、`token` または `emailPassword` を推奨します
+- This is an unofficial integration based on the Boostcamp Web implementation, not an official public API
+- Behavior may change if the upstream API changes
+- `sessionCookie` mode is more sensitive to service-side changes, so `token` or `emailPassword` is recommended
 
 ## Development
 
