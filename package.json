@@ -1,0 +1,46 @@
+{
+  "name": "n8n-nodes-boostcamp",
+  "version": "0.1.0",
+  "description": "Boostcamp community nodes for n8n with Firebase auth and workout history normalization.",
+  "license": "MIT",
+  "homepage": "https://github.com/Aodaruma/n8n-nodes-boostcamp",
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "boostcamp",
+    "fitness",
+    "workout"
+  ],
+  "author": { "name": "Aodaruma", "email": "skyblue.1007.sakkyoku@gmail.com" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aodaruma/n8n-nodes-boostcamp.git"
+  },
+  "scripts": {
+    "build": "n8n-node build",
+    "build:watch": "tsc --watch",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "release": "n8n-node release",
+    "prepublishOnly": "n8n-node prerelease",
+    "test": "vitest run"
+  },
+  "files": ["dist"],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": false,
+    "credentials": ["dist/credentials/BoostcampApi.credentials.js"],
+    "nodes": ["dist/nodes/Boostcamp/Boostcamp.node.js"]
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "*",
+    "@types/node": "^22.0.0",
+    "eslint": "9.29.0",
+    "prettier": "3.8.3",
+    "release-it": "20.2.0",
+    "typescript": "5.9.3",
+    "vitest": "^4.0.0"
+  },
+  "peerDependencies": { "n8n-workflow": "*" }
+}
