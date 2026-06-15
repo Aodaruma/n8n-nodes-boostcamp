@@ -16,6 +16,9 @@
     "type": "git",
     "url": "https://github.com/Aodaruma/n8n-nodes-boostcamp.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "n8n-node build",
     "build:watch": "tsc --watch",
