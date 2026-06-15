@@ -29,7 +29,7 @@ export async function createBoostcampClient(
 	request: FetchLike = fetch as FetchLike,
 ): Promise<BoostcampApiClient> {
 	const baseUrl = (credentials.apiBaseUrl?.trim() || DEFAULT_API_BASE_URL).replace(/\/+$/u, '');
-	const headers = await buildAuthHeaders(credentials, request);
+	const headers = await resolveBoostcampAuthHeaders(credentials, request);
 
 	return {
 		async getUserProfile() {
@@ -44,6 +44,13 @@ export async function createBoostcampClient(
 			);
 		},
 	};
+}
+
+export async function resolveBoostcampAuthHeaders(
+	credentials: BoostcampCredentialsData,
+	request: FetchLike = fetch as FetchLike,
+): Promise<Record<string, string>> {
+	return await buildAuthHeaders(credentials, request);
 }
 
 export function coerceCredentials(rawValue: Record<string, unknown>): BoostcampCredentialsData {

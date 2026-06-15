@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import {
 	coerceCredentials,
 	createBoostcampClient,
+	resolveBoostcampAuthHeaders,
 } from '../nodes/Boostcamp/boostcamp.api';
 import {
 	buildWorkoutsResult,
@@ -83,6 +84,41 @@ describe('boostcamp.api', () => {
 			sessionCookie: undefined,
 			apiBaseUrl: 'https://example.com/api',
 		});
+	});
+
+	it('builds auth headers from email and password', async () => {
+		const request = vi.fn().mockResolvedValue(
+			mockResponse(200, {
+				idToken: 'firebase-token',
+			}),
+		);
+
+		const headers = await resolveBoostcampAuthHeaders(
+			{
+				authMode: 'emailPassword',
+				email: 'user@example.com',
+				password: 'correct-password',
+			},
+			request as never,
+		);
+
+		expect(headers.Authorization).toBe('FirebaseIdToken:firebase-token');
+		expect(request).toHaveBeenCalledTimes(1);
+	});
+
+	it('builds auth headers from a static token without extra requests', async () => {
+		const request = vi.fn();
+
+		const headers = await resolveBoostcampAuthHeaders(
+			{
+				authMode: 'token',
+				token: 'abc123',
+			},
+			request as never,
+		);
+
+		expect(headers.Authorization).toBe('FirebaseIdToken:abc123');
+		expect(request).not.toHaveBeenCalled();
 	});
 });
 

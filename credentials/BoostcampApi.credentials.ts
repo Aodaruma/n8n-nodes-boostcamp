@@ -1,10 +1,14 @@
 import type {
-	IAuthenticateGeneric,
+	IAuthenticate,
 	ICredentialTestRequest,
 	ICredentialType,
 	Icon,
 	INodeProperties,
 } from 'n8n-workflow';
+import {
+	coerceCredentials,
+	resolveBoostcampAuthHeaders,
+} from '../nodes/Boostcamp/boostcamp.api';
 
 export class BoostcampApi implements ICredentialType {
 	name = 'boostcampApi';
@@ -18,20 +22,17 @@ export class BoostcampApi implements ICredentialType {
 
 	documentationUrl = 'https://github.com/Aodaruma/n8n-nodes-boostcamp#readme';
 
-	authenticate: IAuthenticateGeneric = {
-		type: 'generic',
-		properties: {
-			headers: {
-				Accept: '*/*',
-				'Content-Type': 'application/json; charset=UTF-8',
-				Origin: 'https://www.boostcamp.app',
-				Referer: 'https://www.boostcamp.app/',
-				Authorization:
-					'={{$credentials.authMode === "token" && $credentials.token ? "FirebaseIdToken:" + $credentials.token : undefined}}',
-				Cookie:
-					'={{$credentials.authMode === "sessionCookie" ? $credentials.sessionCookie : undefined}}',
-			},
-		},
+	authenticate: IAuthenticate = async (credentials, requestOptions) => {
+		const headers = await resolveBoostcampAuthHeaders(
+			coerceCredentials(credentials as Record<string, unknown>),
+		);
+
+		requestOptions.headers = {
+			...(requestOptions.headers ?? {}),
+			...headers,
+		};
+
+		return requestOptions;
 	};
 
 	test: ICredentialTestRequest = {
@@ -39,6 +40,7 @@ export class BoostcampApi implements ICredentialType {
 			baseURL: '={{$credentials.apiBaseUrl || "https://newapi.boostcamp.app/api/www"}}',
 			url: '/users/get',
 			method: 'POST',
+			body: {},
 		},
 	};
 
