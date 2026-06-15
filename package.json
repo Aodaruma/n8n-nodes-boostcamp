@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-boostcamp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Boostcamp community nodes for n8n with Firebase auth and workout history normalization.",
   "license": "MIT",
   "homepage": "https://github.com/Aodaruma/n8n-nodes-boostcamp",
@@ -26,7 +26,7 @@
     "lint": "n8n-node lint",
     "lint:fix": "n8n-node lint --fix",
     "release": "n8n-node release",
-    "prepublishOnly": "n8n-node prerelease",
+    "prepublishOnly": "npm run build",
     "test": "vitest run"
   },
   "files": ["dist"],
