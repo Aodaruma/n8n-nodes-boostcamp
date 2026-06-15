@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-boostcamp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Boostcamp community nodes for n8n with Firebase auth and workout history normalization.",
   "license": "MIT",
   "homepage": "https://github.com/Aodaruma/n8n-nodes-boostcamp",
