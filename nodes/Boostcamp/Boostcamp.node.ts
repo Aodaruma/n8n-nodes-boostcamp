@@ -121,13 +121,6 @@ export class Boostcamp implements INodeType {
 					},
 				},
 			},
-			{
-				displayName: 'Fail On Error',
-				name: 'failOnError',
-				type: 'boolean',
-				default: false,
-				description: 'Whether to throw instead of returning a structured error payload',
-			},
 		],
 	};
 
@@ -136,8 +129,6 @@ export class Boostcamp implements INodeType {
 		const returnData: INodeExecutionData[] = [];
 
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
-			const failOnError = this.getNodeParameter('failOnError', itemIndex, false) as boolean;
-
 			try {
 				const credentials = coerceCredentials(
 					(await this.getCredentials('boostcampApi')) as IDataObject,
@@ -201,31 +192,21 @@ export class Boostcamp implements INodeType {
 				});
 			} catch (error) {
 				const issue = toBoostcampIssue(error);
-				if (failOnError && !this.continueOnFail()) {
-					throw new NodeOperationError(this.getNode(), issue.message, {
-						itemIndex,
-						description: issue.code,
+				const nodeError = new NodeOperationError(this.getNode(), issue.message, {
+					itemIndex,
+					description: issue.code,
+				});
+
+				if (this.continueOnFail()) {
+					returnData.push({
+						json: {},
+						pairedItem: itemIndex,
+						error: nodeError,
 					});
+					continue;
 				}
 
-				returnData.push({
-					json: {
-						ok: false,
-						source: 'boostcamp',
-						sessions: [],
-						summary: {
-							sessions: 0,
-							exercises: 0,
-							totalSets: 0,
-							workingSets: 0,
-							totalVolumeKg: 0,
-						},
-						warnings: [],
-						errors: [issue],
-						raw: null,
-					} as unknown as IDataObject,
-					pairedItem: itemIndex,
-				});
+				throw nodeError;
 			}
 		}
 
@@ -241,7 +222,6 @@ async function executeTestAuth(
 	const weightUnit = extractWeightUnit(profile);
 
 	return {
-		ok: true,
 		source: 'boostcamp',
 		account: {
 			id: asString(profile.id),
@@ -259,7 +239,6 @@ async function executeTestAuth(
 			totalVolumeKg: 0,
 		},
 		warnings: [],
-		errors: [],
 		raw: null,
 	};
 }

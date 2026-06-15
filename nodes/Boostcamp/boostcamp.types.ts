@@ -69,7 +69,6 @@ export interface BoostcampPeriod {
 }
 
 export interface BoostcampWorkoutsResult {
-	ok: boolean;
 	source: 'boostcamp';
 	period?: BoostcampPeriod;
 	account?: {
@@ -82,6 +81,5 @@ export interface BoostcampWorkoutsResult {
 	sessions: BoostcampSession[];
 	summary: BoostcampSummary;
 	warnings: BoostcampIssue[];
-	errors: BoostcampIssue[];
 	raw: unknown | null;
 }

@@ -124,11 +124,9 @@ export function buildWorkoutsResult(params: {
 	sessions: BoostcampSession[];
 	summary: BoostcampSummary;
 	warnings: BoostcampIssue[];
-	errors?: BoostcampIssue[];
 	raw?: unknown;
 }) {
 	return {
-		ok: (params.errors?.length ?? 0) === 0,
 		source: 'boostcamp' as const,
 		period: {
 			startDate: params.startDate,
@@ -138,7 +136,6 @@ export function buildWorkoutsResult(params: {
 		sessions: params.sessions,
 		summary: params.summary,
 		warnings: params.warnings,
-		errors: params.errors ?? [],
 		raw: params.raw ?? null,
 	};
 }

@@ -231,6 +231,27 @@ describe('boostcamp.normalize', () => {
 		expect(result.raw).toBeNull();
 	});
 
+	it('does not include ok or errors in the normalized result', () => {
+		const result = buildWorkoutsResult({
+			startDate: '2026-06-01',
+			endDate: '2026-06-30',
+			timezone: 'Asia/Tokyo',
+			sessions: [],
+			summary: {
+				sessions: 0,
+				exercises: 0,
+				totalSets: 0,
+				workingSets: 0,
+				totalVolumeKg: 0,
+			},
+			warnings: [],
+			raw: null,
+		}) as Record<string, unknown>;
+
+		expect(result.ok).toBeUndefined();
+		expect(result.errors).toBeUndefined();
+	});
+
 	it('validates date range format and order', () => {
 		expect(() => validateDateRange('2026-06-30', '2026-06-01')).toThrow();
 		expect(() => validateDateRange('2026/06/01', '2026-06-30')).toThrow();
